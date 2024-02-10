@@ -1,0 +1,23 @@
+{% extends 'base.html' %} {% block title %} Details {{user.first_name}} {%
+endblock %} {% block content %}
+
+<div class="card mb-3" style="max-width: 540px">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img
+        src="{{ user.image_url if user.image_url else url_for('static',filename='images/user.png') }}"
+        class="img-fluid rounded-start"
+        alt="..."
+      />
+    </div>
+    <div class="col-md-8">
+      <div class="card-body p-1">
+        <h5 class="card-title">{{user.full_name}}</h5>
+        <a href="/users/{{user.id}}/edit" class="btn btn-primary">Edit</a>
+        <a href="/users/{{user.id}}/delete" class="btn btn-danger">Remove</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{%endblock%}
