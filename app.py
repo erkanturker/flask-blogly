@@ -1,7 +1,7 @@
 """Blogly application."""
 
 from flask import Flask,render_template,redirect,request
-from models import db, connect_db,User
+from models import db, connect_db,User,Post
 
 def create_app(db_name, testing=False):
 
@@ -70,6 +70,20 @@ def create_app(db_name, testing=False):
         
         user = User.query.get(user_id)
         return render_template("create_post.html",user=user)
+    
+    @app.route("/users/<int:user_id>/posts/new", methods=['POST'])
+    def create_post(user_id):
+
+        title = request.form['title']
+        content = request.form['content']
+        new_post = Post(title=title,content=content,user_id=user_id)
+        db.session.add(new_post)
+        db.session.commit()
+        
+        return redirect(f"/users/{user_id}")
+        
+
+
     
     return app
 
