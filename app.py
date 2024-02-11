@@ -65,6 +65,12 @@ def create_app(db_name, testing=False):
 
         return redirect(f"/users")
     
+    @app.route("/users/<int:user_id>/posts/new")
+    def show_post_form(user_id):
+        
+        user = User.query.get(user_id)
+        return render_template("create_post.html",user=user)
+    
     return app
 
 if __name__ == '__main__':
