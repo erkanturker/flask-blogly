@@ -82,7 +82,10 @@ def create_app(db_name, testing=False):
         
         return redirect(f"/users/{user_id}")
         
-
+    @app.route("/posts/<int:post_id>")
+    def show_post(post_id):
+        post= Post.query.get(post_id)
+        return render_template("post_details.html",post=post)
 
     
     return app

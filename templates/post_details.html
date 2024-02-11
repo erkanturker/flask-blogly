@@ -1,0 +1,17 @@
+{% extends 'base.html' %} {% block title %} Post Details {% endblock %} {% block
+content %}
+
+<div class="card">
+  <div class="card-body">
+    <h1 class="card-title">{{post.title}}</h1>
+    <p class="card-text">{{post.content}}</p>
+    <p class="font-italic">By {{post.user.full_name}}</p>
+  </div>
+  <div class="text-left mb-3 pl-3">
+    <button type="button" class="btn btn-secondary mr-2">Cancel</button>
+    <button type="submit" class="btn btn-primary mr-2">Edit</button>
+    <button type="submit" class="btn btn-danger">Delete</button>
+  </div>
+</div>
+
+{%endblock%}
