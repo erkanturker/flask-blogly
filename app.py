@@ -86,6 +86,11 @@ def create_app(db_name, testing=False):
     def show_post(post_id):
         post= Post.query.get(post_id)
         return render_template("post_details.html",post=post)
+    
+    @app.route("/posts/<int:post_id>/edit")
+    def show_edit_post(post_id):
+        post= Post.query.get(post_id)
+        return render_template("edit_post.html",post=post)
 
     
     return app
