@@ -91,6 +91,20 @@ def create_app(db_name, testing=False):
     def show_edit_post(post_id):
         post= Post.query.get(post_id)
         return render_template("edit_post.html",post=post)
+    
+    @app.route("/posts/<int:post_id>/edit",methods=['POST'])
+    def edit_post(post_id):
+        
+        edit_post= Post.query.get(post_id)
+
+        edit_post.title = request.form['title']
+        edit_post.content = request.form['content']
+
+        db.session.add(edit_post)
+        db.session.commit()
+
+        return redirect(f"/posts/{edit_post.id}")
+
 
     
     return app
