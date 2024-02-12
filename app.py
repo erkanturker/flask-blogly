@@ -2,6 +2,8 @@
 
 from flask import Flask,render_template,redirect,request
 from models import db, connect_db,User,Post
+from datetime import datetime,timedelta
+
 
 def create_app(db_name, testing=False):
 
@@ -12,7 +14,24 @@ def create_app(db_name, testing=False):
 
     @app.route("/")
     def show_main():
-        return redirect("/users")
+
+        # Calculate the date 10 days ago
+        ten_days_ago = datetime.now() - timedelta(days=10)
+
+         # Calculate grap last 10 days post and order in new created first
+        posts = Post.query.filter(Post.created_at>ten_days_ago).order_by(Post.created_at.desc()).limit(5)
+
+         # Convert date time
+        for post in posts:
+
+            post.created_at = datetime.strftime(post.created_at,'%a %b %d %Y, %I:%M %p')
+
+        return render_template("index.html",posts=posts)
+    
+    @app.errorhandler(404)
+    def page_not_found(e):
+         """Show 404 NOT FOUND page."""
+         return render_template('404.html'), 404
 
     @app.route("/users")
     def show_users():
@@ -37,17 +56,17 @@ def create_app(db_name, testing=False):
 
     @app.route("/users/<int:user_id>")
     def show_user_details(user_id):
-        user = User.query.get(user_id)
+        user = User.query.get_or_404(user_id)
         return render_template("details.html", user=user)
 
     @app.route("/users/<int:user_id>/edit")
     def show_user_edit_page(user_id):
-        user = User.query.get(user_id)
+        user = User.query.get_or_404(user_id)
         return render_template("edit_form.html", user=user)
 
     @app.route("/users/<int:user_id>/edit", methods=['POST'])
     def edit_user(user_id):
-        user = User.query.get(user_id)
+        user = User.query.get_or_404(user_id)
         user.first_name= request.form['firstName']
         user.last_name = request.form['lastName']
         user.image_url = request.form['imageUrl']
@@ -58,7 +77,7 @@ def create_app(db_name, testing=False):
 
     @app.route("/users/<int:user_id>/delete")
     def delete_user(user_id):
-        deleted_user = User.query.get(user_id)
+        deleted_user = User.query.get_or_404(user_id)
 
         db.session.delete(deleted_user)
         db.session.commit()
@@ -68,7 +87,7 @@ def create_app(db_name, testing=False):
     @app.route("/users/<int:user_id>/posts/new")
     def show_post_form(user_id):
         
-        user = User.query.get(user_id)
+        user = User.query.get_or_404(user_id)
         return render_template("create_post.html",user=user)
     
     @app.route("/users/<int:user_id>/posts/new", methods=['POST'])
@@ -84,18 +103,18 @@ def create_app(db_name, testing=False):
         
     @app.route("/posts/<int:post_id>")
     def show_post(post_id):
-        post= Post.query.get(post_id)
+        post= Post.query.get_or_404(post_id)
         return render_template("post_details.html",post=post)
     
     @app.route("/posts/<int:post_id>/edit")
     def show_edit_post(post_id):
-        post= Post.query.get(post_id)
+        post= Post.query.get_or_404(post_id)
         return render_template("edit_post.html",post=post)
     
     @app.route("/posts/<int:post_id>/edit",methods=['POST'])
     def edit_post(post_id):
         
-        edit_post= Post.query.get(post_id)
+        edit_post= Post.query.get_or_404(post_id)
 
         edit_post.title = request.form['title']
         edit_post.content = request.form['content']
@@ -107,7 +126,7 @@ def create_app(db_name, testing=False):
     
     @app.route("/posts/<int:post_id>/delete")
     def delete_post(post_id):
-        deleted_post= Post.query.get(post_id)
+        deleted_post= Post.query.get_or_404(post_id)
         user_id =  deleted_post.user.id
 
         db.session.delete(deleted_post)
