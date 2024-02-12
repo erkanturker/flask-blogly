@@ -104,9 +104,17 @@ def create_app(db_name, testing=False):
         db.session.commit()
 
         return redirect(f"/posts/{edit_post.id}")
-
-
     
+    @app.route("/posts/<int:post_id>/delete")
+    def delete_post(post_id):
+        deleted_post= Post.query.get(post_id)
+        user_id =  deleted_post.user.id
+
+        db.session.delete(deleted_post)
+        db.session.commit()
+
+        return redirect(f"/users/{user_id}")
+
     return app
 
 if __name__ == '__main__':
