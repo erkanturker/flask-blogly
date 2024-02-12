@@ -8,7 +8,7 @@ content %}
     <p class="font-italic">By {{post.user.full_name}}</p>
   </div>
   <div class="text-left mb-3 pl-3">
-    <button type="button" class="btn btn-secondary mr-2">Cancel</button>
+    <a href="/users/{{post.user.id}}" class="btn btn-secondary mr-2">Cancel</a>
     <a href="/posts/{{post.id}}/edit" class="btn btn-primary mr-2">Edit</a>
     <a href="/posts/{{post.id}}/delete" class="btn btn-danger">Delete</a>
   </div>

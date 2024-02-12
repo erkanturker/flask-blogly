@@ -15,6 +15,21 @@ endblock %} {% block content %}
         <h5 class="card-title">{{user.full_name}}</h5>
         <a href="/users/{{user.id}}/edit" class="btn btn-primary">Edit</a>
         <a href="/users/{{user.id}}/delete" class="btn btn-danger">Remove</a>
+        <div>
+          <h5 class="card-title mt-2">Posts</h5>
+          {% if user.posts %}
+          <ul>
+            {%for post in user.posts%}
+            <li><a href="/posts/{{post.id}}">{{post.title}}</a></li>
+            {%endfor%}
+          </ul>
+          {% else %}
+          <p>No posts created.</p>
+          {% endif %}
+        </div>
+        <a href="/users/{{user.id}}/posts/new" class="btn btn-primary my-2"
+          >Add Post</a
+        >
       </div>
     </div>
   </div>
