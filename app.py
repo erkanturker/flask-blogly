@@ -146,8 +146,16 @@ def create_app(db_name, testing=False):
         db.session.commit()
 
         return redirect("/")
+    
+    @app.route("/tags")
+    def show_tags():
+        tags = Tag.query.all()
+
+        return render_template("/tags/tags.html",tags=tags)
 
     return app
+
+
 
 if __name__ == '__main__':
     app = create_app('blogly_db')
