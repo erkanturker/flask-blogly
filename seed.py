@@ -1,4 +1,4 @@
-from models import User,Post,db,connect_db 
+from models import User,Post,Tag,PostTag,db,connect_db 
 from app import create_app
 
 app = create_app("blogly_db", testing=True)
@@ -60,8 +60,21 @@ post4 = Post(title=title4,content=content4,user_id='2')
 db.session.add_all([post1,post2,post3,post4])
 db.session.commit()
 
+tag1 = Tag(name='Machine Learning')
+tag2 = Tag(name='Data Visualization')
+tag3 = Tag(name='Natural Language Processing')
+tag4 = Tag(name='Neural Networks')
 
+db.session.add_all([tag1, tag2, tag3, tag4])
+db.session.commit()
 
+posttag1 = PostTag(post_id=post1.id, tag_id=tag1.id)
+posttag2 = PostTag(post_id=post2.id, tag_id=tag2.id)
+posttag3 = PostTag(post_id=post3.id, tag_id=tag3.id)
+posttag4 = PostTag(post_id=post4.id, tag_id=tag4.id)
+
+db.session.add_all([posttag1, posttag2, posttag3, posttag4])
+db.session.commit()
 
 
 

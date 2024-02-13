@@ -1,7 +1,7 @@
 """Blogly application."""
 
 from flask import Flask,render_template,redirect,request
-from models import db, connect_db,User,Post
+from models import db, connect_db,User,Post,PostTag,Tag
 from datetime import datetime,timedelta
 
 
@@ -133,6 +133,19 @@ def create_app(db_name, testing=False):
         db.session.commit()
 
         return redirect(f"/users/{user_id}")
+    
+    @app.route('/tags/new')
+    def show_create_tag():
+        return render_template("tags/create_tag.html")
+    
+    @app.route('/tags/new',methods=['POST'])
+    def create_tag():
+        tag_name = request.form['tagName']
+        new_tag = Tag(name=tag_name)
+        db.session.add(new_tag)
+        db.session.commit()
+
+        return redirect("/")
 
     return app
 
