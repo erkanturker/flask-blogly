@@ -152,9 +152,16 @@ def create_app(db_name, testing=False):
         tags = Tag.query.all()
 
         return render_template("/tags/tags.html",tags=tags)
+    
+    @app.route("/tags/<int:tag_id>")
+    def show_tag_details(tag_id):
+
+        tag = Tag.query.get(tag_id)
+        return render_template("/tags/tag_details.html", tag=tag)
 
     return app
 
+   
 
 
 if __name__ == '__main__':
