@@ -96,8 +96,15 @@ def create_app(db_name, testing=False):
 
         title = request.form['title']
         content = request.form['content']
+        selected_tags = request.form.getlist('tags')
         new_post = Post(title=title,content=content,user_id=user_id)
         db.session.add(new_post)
+        db.session.commit()
+
+        for tag_name in selected_tags:
+         tag = Tag.query.filter_by(name=tag_name).first()
+         new_post.posted_tags.append(PostTag(tag_id=tag.id))
+        
         db.session.commit()
         
         return redirect(f"/users/{user_id}")
