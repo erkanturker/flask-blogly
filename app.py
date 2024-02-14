@@ -30,15 +30,21 @@ def create_app(db_name, testing=False):
 
     @app.route("/users")
     def show_users():
+        """Show a page with info on all users"""
+
         users = User.query.order_by(User.last_name,User.first_name).all()
         return render_template('list.html',users=users)
 
     @app.route("/users/new")
     def show_create_user_form():
+        """Show a form to create a new user"""
+
         return render_template("create_form.html")
 
     @app.route("/users/new", methods=['POST'])
     def create_user():
+        """Handle form submission for creating a new user"""
+
         first_name= request.form['firstName']
         last_name = request.form['lastName']
         image_url = request.form['imageUrl']
@@ -51,16 +57,22 @@ def create_app(db_name, testing=False):
 
     @app.route("/users/<int:user_id>")
     def show_user_details(user_id):
+        """Show a page with info on a specific user"""
+
         user = User.query.get_or_404(user_id)
         return render_template("details.html", user=user)
 
     @app.route("/users/<int:user_id>/edit")
     def show_user_edit_page(user_id):
+        """Show a form to edit an existing user"""
+
         user = User.query.get_or_404(user_id)
         return render_template("edit_form.html", user=user)
 
     @app.route("/users/<int:user_id>/edit", methods=['POST'])
     def edit_user(user_id):
+        """Handle form submission for updating an existing user"""
+
         user = User.query.get_or_404(user_id)
         user.first_name= request.form['firstName']
         user.last_name = request.form['lastName']
@@ -72,12 +84,14 @@ def create_app(db_name, testing=False):
 
     @app.route("/users/<int:user_id>/delete")
     def delete_user(user_id):
-        deleted_user = User.query.get_or_404(user_id)
+        """Handle form submission for deleting an existing user"""
 
+        deleted_user = User.query.get_or_404(user_id)
         db.session.delete(deleted_user)
         db.session.commit()
 
         return redirect(f"/users")
+
     
     @app.route("/users/<int:user_id>/posts/new")
     def show_post_form(user_id):
@@ -205,9 +219,6 @@ def create_app(db_name, testing=False):
         return redirect("/tags")
 
     return app
-
-   
-
 
 if __name__ == '__main__':
     app = create_app('blogly_db')
