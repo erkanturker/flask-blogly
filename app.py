@@ -145,7 +145,7 @@ def create_app(db_name, testing=False):
         db.session.add(new_tag)
         db.session.commit()
 
-        return redirect("/")
+        return redirect("/tags")
     
     @app.route("/tags")
     def show_tags():
