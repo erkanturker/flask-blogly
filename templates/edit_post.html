@@ -27,8 +27,14 @@ content %}
     <input
       class="form-check-input"
       type="checkbox"
-      value="{{tag.name}}"
-      id="tag-{{tag.id}}"
+      value="{{tag.id}}"
+      name="tags"
+      id="{{tag.id}}"
+      {%if
+      tag
+      in
+      post.tags%}checked
+      {%endif%}
     />
     <label class="form-check-label" for="tag-{{tag.id}}"> {{tag.name}} </label>
   </div>

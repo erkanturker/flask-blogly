@@ -8,6 +8,18 @@ content %}
       <input type="text" class="form-control" id="tagName" name="tagName" />
     </div>
   </div>
+  {%if posts %} {%for post in posts%}
+  <div class="form-check">
+    <input
+      class="form-check-input"
+      type="checkbox"
+      value="{{post.id}}"
+      name="tags"
+      id="{{post.id}}"
+    />
+    <label class="form-check-label" for="{{post.id}}"> {{post.title}} </label>
+  </div>
+  {%endfor%} {%endif%}
   <div class="text-right col-sm-6">
     <a href="/tags" class="btn btn-secondary mr-2">Cancel</a>
     <button type="submit" class="btn btn-primary">Add</button>

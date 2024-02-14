@@ -122,11 +122,15 @@ def create_app(db_name, testing=False):
     
     @app.route("/posts/<int:post_id>/edit",methods=['POST'])
     def edit_post(post_id):
-        
         edit_post= Post.query.get_or_404(post_id)
 
         edit_post.title = request.form['title']
         edit_post.content = request.form['content']
+
+        edited_tags = request.form.getlist('tags')
+
+        tag_ids = [int(num) for num in edited_tags]
+        edit_post.tags = Tag.query.filter(Tag.id.in_(tag_ids)).all()
 
         db.session.add(edit_post)
         db.session.commit()
@@ -145,12 +149,19 @@ def create_app(db_name, testing=False):
     
     @app.route('/tags/new')
     def show_create_tag():
-        return render_template("tags/create_tag.html")
+        posts= Post.query.all()
+        return render_template("tags/create_tag.html",posts=posts)
     
     @app.route('/tags/new',methods=['POST'])
     def create_tag():
         tag_name = request.form['tagName']
         new_tag = Tag(name=tag_name)
+        db.session.add(new_tag)
+        db.session.commit()
+
+        post_ids = [int(num) for num in request.form.getlist('tags')]
+        new_tag.posts = Post.query.filter(Post.id.in_(post_ids)).all()
+
         db.session.add(new_tag)
         db.session.commit()
 
@@ -171,14 +182,19 @@ def create_app(db_name, testing=False):
     @app.route("/tags/<int:tag_id>/edit")
     def show_edit_tag(tag_id):
         tag = Tag.query.get_or_404(tag_id)
+        posts = Post.query.all()
 
-        return render_template("/tags/edit_tag.html",tag=tag)
+        return render_template("/tags/edit_tag.html",tag=tag,posts=posts)
     
     @app.route("/tags/<int:tag_id>/edit",methods=['POST'])
     def edit_tag(tag_id):
         tag = Tag.query.get_or_404(tag_id)
 
         tag.name = request.form['tagName']
+        
+        post_ids = [int(num) for num in request.form.getlist('tags')]
+        tag.posts = Post.query.filter(Post.id.in_(post_ids)).all()
+
         db.session.add(tag)
         db.session.commit()
 
