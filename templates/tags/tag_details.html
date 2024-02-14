@@ -8,6 +8,6 @@ content %}
   </li>
   {%endfor%}
 </ul>
-<a href="/tags/new" class="btn btn-primary my-2">Edit</a>
-<a href="/tags/new" class="btn btn-danger my-2">Delete</a>
+<a href="/tags/{{tag.id}}/edit" class="btn btn-primary my-2">Edit</a>
+<a href="/tags/{{tag.id}}/delete" class="btn btn-danger my-2">Delete</a>
 {% endblock %}

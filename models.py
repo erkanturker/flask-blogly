@@ -40,7 +40,7 @@ class Tag(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False, unique=True)
-    posted_tags = db.relationship('PostTag', backref='tag')
+    posted_tags = db.relationship('PostTag', backref='tag', cascade='all, delete-orphan')
 
     posts = db.relationship('Post',secondary='post_tags',backref='tags')
 

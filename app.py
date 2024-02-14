@@ -156,8 +156,33 @@ def create_app(db_name, testing=False):
     @app.route("/tags/<int:tag_id>")
     def show_tag_details(tag_id):
 
-        tag = Tag.query.get(tag_id)
+        tag = Tag.query.get_or_404(tag_id)
         return render_template("/tags/tag_details.html", tag=tag)
+    
+    @app.route("/tags/<int:tag_id>/edit")
+    def show_edit_tag(tag_id):
+        tag = Tag.query.get_or_404(tag_id)
+
+        return render_template("/tags/edit_tag.html",tag=tag)
+    
+    @app.route("/tags/<int:tag_id>/edit",methods=['POST'])
+    def edit_tag(tag_id):
+        tag = Tag.query.get_or_404(tag_id)
+
+        tag.name = request.form['tagName']
+        db.session.add(tag)
+        db.session.commit()
+
+        return redirect("/tags")
+    
+    @app.route("/tags/<int:tag_id>/delete")
+    def delete_tag(tag_id):
+        tag = Tag.query.get_or_404(tag_id)
+
+        db.session.delete(tag)
+        db.session.commit()
+
+        return redirect("/tags")
 
     return app
 
