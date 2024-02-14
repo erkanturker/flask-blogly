@@ -6,6 +6,12 @@ content %}
     <h1 class="card-title">{{post.title}}</h1>
     <p class="card-text">{{post.content}}</p>
     <p class="font-italic">By {{post.user.full_name}}</p>
+    <h6>
+      <strong>Tags</strong>
+      {%for tag in post.tags%}
+      <span class="badge bg-primary text-light">{{tag.name}}</span>
+      {%endfor%}
+    </h6>
   </div>
   <div class="text-left mb-3 pl-3">
     <a href="/users/{{post.user.id}}" class="btn btn-secondary mr-2">Cancel</a>

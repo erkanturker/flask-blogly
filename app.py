@@ -88,7 +88,8 @@ def create_app(db_name, testing=False):
     def show_post_form(user_id):
         
         user = User.query.get_or_404(user_id)
-        return render_template("create_post.html",user=user)
+        all_tags = Tag.query.all()
+        return render_template("create_post.html",user=user,tags=all_tags)
     
     @app.route("/users/<int:user_id>/posts/new", methods=['POST'])
     def create_post(user_id):
@@ -109,7 +110,8 @@ def create_app(db_name, testing=False):
     @app.route("/posts/<int:post_id>/edit")
     def show_edit_post(post_id):
         post= Post.query.get_or_404(post_id)
-        return render_template("edit_post.html",post=post)
+        all_tags = Tag.query.all()
+        return render_template("edit_post.html",post=post, tags=all_tags)
     
     @app.route("/posts/<int:post_id>/edit",methods=['POST'])
     def edit_post(post_id):

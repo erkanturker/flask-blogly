@@ -14,6 +14,18 @@ content %}
       <textarea class="form-control" id="content" name="content"></textarea>
     </div>
   </div>
+  {%if tags %} {%for tag in tags%}
+  <div class="form-check">
+    <input
+      class="form-check-input"
+      name="tags"
+      type="checkbox"
+      value="{{tag.name}}"
+      id="tag-{{tag.id}}"
+    />
+    <label class="form-check-label" for="tag-{{tag.id}}"> {{tag.name}} </label>
+  </div>
+  {%endfor%} {%endif%}
   <div class="text-right">
     <button type="button" class="btn btn-secondary mr-2">Cancel</button>
     <button type="submit" class="btn btn-primary">Add</button>
