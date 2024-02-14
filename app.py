@@ -21,11 +21,6 @@ def create_app(db_name, testing=False):
          # Calculate grap last 10 days post and order in new created first
         posts = Post.query.filter(Post.created_at>ten_days_ago).order_by(Post.created_at.desc()).limit(5)
 
-         # Convert date time
-        for post in posts:
-
-            post.created_at = datetime.strftime(post.created_at,'%a %b %d %Y, %I:%M %p')
-
         return render_template("index.html",posts=posts)
     
     @app.errorhandler(404)
